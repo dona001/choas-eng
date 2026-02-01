@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@playwright/test": "^1.58.1",
+    "allure-commandline": "^2.36.0",
+    "allure-playwright": "^3.4.5",
     "framer-motion": "^12.29.2",
     "next": "16.1.6",
     "react": "19.2.3",

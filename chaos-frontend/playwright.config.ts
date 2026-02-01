@@ -2,15 +2,28 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
     testDir: './tests',
-    fullyParallel: true,
+    fullyParallel: false, // Run sequentially for better visual observation
     forbidOnly: !!process.env.CI,
-    retries: process.env.CI ? 2 : 0,
-    workers: process.env.CI ? 1 : undefined,
-    reporter: [['html', { outputFolder: 'playwright-report' }]],
+    retries: 0, // No retries for chaos tests
+    workers: 1, // Single worker for sequential execution
+    reporter: [
+        ['list'], // Console output
+        ['allure-playwright', {
+            outputFolder: 'allure-results',
+            detail: true,
+            suiteTitle: true,
+        }],
+    ],
     use: {
         baseURL: 'http://localhost:3000',
-        trace: 'on-first-retry',
-        screenshot: 'only-on-failure',
+        trace: 'on',
+        screenshot: 'on',
+        video: 'on',
+        headless: false, // Show browser during tests
+        viewport: { width: 1920, height: 1080 },
+        launchOptions: {
+            slowMo: 500, // Slow down actions for visibility
+        },
     },
     projects: [
         {

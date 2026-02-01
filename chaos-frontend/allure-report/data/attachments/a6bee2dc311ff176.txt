@@ -1,0 +1,6 @@
+🔵 EXPECTATION: Already loaded content persists offline
+📍 Navigated to: http://localhost:3000/
+✅ Page loaded successfully
+⚡ Chaos Injected: Network offline
+✅ ACTUAL: Content persisted offline
+✅ PASS: Page handles offline mode

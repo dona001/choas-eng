@@ -1,0 +1,7 @@
+"BROKEN","EPIC","FAILED","FEATURE","PASSED","SKIPPED","STORY","UNKNOWN"
+"0","Frontend Resilience","0","Network Chaos","1","0","Connection Failure","0"
+"0","Frontend Resilience","0","Data Handling","1","0","Empty State","0"
+"0","Frontend Resilience","0","Dependency Chaos","1","0","Server Error Handling","0"
+"0","","0","","3","0","","0"
+"0","Frontend Resilience","0","Network Chaos","1","0","High Latency Handling","0"
+"0","Frontend Resilience","0","Network Chaos","1","0","Offline Mode","0"

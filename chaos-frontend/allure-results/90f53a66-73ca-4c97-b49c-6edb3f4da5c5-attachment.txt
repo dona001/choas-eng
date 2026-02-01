@@ -1,0 +1,1 @@
+✅ PASS: Error boundary handles backend outage
