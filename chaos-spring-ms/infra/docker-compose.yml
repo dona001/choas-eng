@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: chaos-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-chaos_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chaos_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-chaos_db}
+    networks:
+      - chaos-net
+    labels:
+      com.example.project: chaos-spring-ms
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: chaos-redis
+    networks:
+      - chaos-net
+    labels:
+      com.example.project: chaos-spring-ms
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  wiremock:
+    image: wiremock/wiremock:3.3.1
+    container_name: chaos-wiremock
+    volumes:
+      - ../wiremock/mappings:/home/wiremock/mappings
+      - ../wiremock/__files:/home/wiremock/__files
+    ports:
+      - "${WIREMOCK_PORT}:8080"
+    networks:
+      - chaos-net
+    labels:
+      com.example.project: chaos-spring-ms
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/__admin/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  toxiproxy:
+    image: ghcr.io/shopify/toxiproxy:2.7.0
+    container_name: chaos-toxiproxy
+    command: -host 0.0.0.0
+    ports:
+      - "${TOXIPROXY_PORT}:8474"
+    networks:
+      - chaos-net
+    labels:
+      com.example.project: chaos-spring-ms
+    # Removed healthcheck as image is distroless
+
+
+  ms:
+    build:
+      context: ../service
+      dockerfile: Dockerfile
+    container_name: chaos-ms
+    depends_on:
+      toxiproxy:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://toxiproxy:15432/${POSTGRES_DB:-chaos_db}?socketTimeout=30
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-chaos_user}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-chaos_pass}
+      SPRING_DATA_REDIS_HOST: toxiproxy
+      SPRING_DATA_REDIS_PORT: 16379
+      EXTERNAL_API_BASE_URL: http://toxiproxy:18080
+    ports:
+      - "${MS_PORT}:8080"
+    networks:
+      - chaos-net
+    labels:
+      com.example.project: chaos-spring-ms
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+  pumba:
+    image: gaiaadm/pumba
+    container_name: chaos-pumba
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - chaos-net
+    labels:
+      com.example.project: chaos-spring-ms
+    command: --interval 10h pause some-non-existent-container # Dummy command to keep it alive but idle
+
+networks:
+  chaos-net:
+    driver: bridge
+    labels:
+      com.example.project: chaos-spring-ms

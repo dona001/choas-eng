@@ -1,0 +1,8 @@
+**/target/
+**/.idea/
+**/.vscode/
+**/.DS_Store
+**/*.log
+chaos-spring-ms/ms_logs.txt
+chaos-spring-ms/tests/chaos_report.html
+chaos-spring-ms/chaos_report.html

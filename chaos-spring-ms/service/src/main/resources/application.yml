@@ -1,0 +1,86 @@
+spring:
+  application:
+    name: chaos-spring-ms
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:15432/chaos_db?socketTimeout=30}
+    username: ${SPRING_DATASOURCE_USERNAME:chaos_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:chaos_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 10000 # 10 seconds
+      maximum-pool-size: 20
+      minimum-idle: 10
+      idle-timeout: 30000
+      max-lifetime: 60000
+      keepalive-time: 15000
+      leak-detection-threshold: 2000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          time_zone: UTC
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:16379}
+      timeout: 2000ms
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000 # 10 minutes
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      externalApi:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowType: COUNT_BASED
+        minimumNumberOfCalls: 5
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+  timelimiter:
+    instances:
+      externalApi:
+        timeoutDuration: 2s
+  retry:
+    instances:
+      externalApi:
+        maxAttempts: 3
+        waitDuration: 500ms
+        retryExceptions:
+          - java.util.concurrent.TimeoutException
+          - org.springframework.web.client.HttpServerErrorException
+
+external:
+  api:
+    base-url: ${EXTERNAL_API_BASE_URL:http://localhost:18080}
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [correlationId=%X{correlationId}] - %msg%n"
+  level:
+    root: INFO
+    com.example.chaos: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    com.zaxxer.hikari: DEBUG

@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/external/info/([0-9]+)"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"id\": {{request.pathSegments.[2]}}, \"description\": \"External info for item\", \"status\": \"ACTIVE\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "transformers": ["response-template"]
+  }
+}

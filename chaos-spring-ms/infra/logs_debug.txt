@@ -1,0 +1,108 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.1)
+
+2026-01-29 15:10:22 [main] INFO  c.e.c.ms.ChaosSpringMsApplication - [correlationId=] - Starting ChaosSpringMsApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2026-01-29 15:10:22 [main] DEBUG c.e.c.ms.ChaosSpringMsApplication - [correlationId=] - Running with Spring Boot v3.4.1, Spring v6.2.1
+2026-01-29 15:10:22 [main] INFO  c.e.c.ms.ChaosSpringMsApplication - [correlationId=] - No active profile set, falling back to 1 default profile: "default"
+2026-01-29 15:10:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-29 15:10:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-29 15:10:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Finished Spring Data repository scanning in 113 ms. Found 1 JPA repository interface.
+2026-01-29 15:10:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-29 15:10:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-01-29 15:10:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - [correlationId=] - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.example.chaos.ms.repository.ItemRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-29 15:10:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Finished Spring Data repository scanning in 2 ms. Found 0 Redis repository interfaces.
+2026-01-29 15:10:25 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [correlationId=] - Tomcat initialized with port 8080 (http)
+2026-01-29 15:10:25 [main] INFO  o.a.catalina.core.StandardService - [correlationId=] - Starting service [Tomcat]
+2026-01-29 15:10:25 [main] INFO  o.a.catalina.core.StandardEngine - [correlationId=] - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2026-01-29 15:10:25 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [correlationId=] - Initializing Spring embedded WebApplicationContext
+2026-01-29 15:10:25 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - [correlationId=] - Root WebApplicationContext: initialization completed in 2968 ms
+2026-01-29 15:10:26 [main] INFO  o.h.jpa.internal.util.LogHelper - [correlationId=] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-29 15:10:26 [main] INFO  org.hibernate.Version - [correlationId=] - HHH000412: Hibernate ORM core version 6.6.4.Final
+2026-01-29 15:10:26 [main] INFO  o.h.c.i.RegionFactoryInitiator - [correlationId=] - HHH000026: Second-level cache disabled
+2026-01-29 15:10:27 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - [correlationId=] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-29 15:10:27 [main] WARN  com.zaxxer.hikari.HikariConfig - [correlationId=] - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-01-29 15:10:27 [main] INFO  com.zaxxer.hikari.HikariDataSource - [correlationId=] - HikariPool-1 - Starting...
+2026-01-29 15:10:27 [main] INFO  com.zaxxer.hikari.pool.HikariPool - [correlationId=] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2ce3d95a
+2026-01-29 15:10:27 [main] INFO  com.zaxxer.hikari.HikariDataSource - [correlationId=] - HikariPool-1 - Start completed.
+2026-01-29 15:10:27 [main] WARN  org.hibernate.orm.deprecation - [correlationId=] - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-29 15:10:27 [main] INFO  o.hibernate.orm.connections.pooling - [correlationId=] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.11
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-29 15:10:28 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - [correlationId=] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-29 15:10:28 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - [correlationId=] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-29 15:10:30 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - [correlationId=] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-29 15:10:31 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - [correlationId=] - Exposing 2 endpoints beneath base path '/actuator'
+2026-01-29 15:10:31 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [correlationId=] - Tomcat started on port 8080 (http) with context path '/'
+2026-01-29 15:10:31 [main] INFO  c.e.c.ms.ChaosSpringMsApplication - [correlationId=] - Started ChaosSpringMsApplication in 9.127 seconds (process running for 11.195)
+2026-01-29 15:10:35 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [correlationId=] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-29 15:10:35 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - [correlationId=] - Initializing Servlet 'dispatcherServlet'
+2026-01-29 15:10:35 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - [correlationId=] - Completed initialization in 8 ms
+2026-01-29 15:10:39 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - [correlationId=] - Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-29 15:10:39 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - [correlationId=] - Graceful shutdown complete
+2026-01-29 15:10:40 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - [correlationId=] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-29 15:10:40 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - [correlationId=] - HikariPool-1 - Shutdown initiated...
+2026-01-29 15:10:40 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - [correlationId=] - HikariPool-1 - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.1)
+
+2026-01-29 15:10:42 [main] INFO  c.e.c.ms.ChaosSpringMsApplication - [correlationId=] - Starting ChaosSpringMsApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2026-01-29 15:10:42 [main] DEBUG c.e.c.ms.ChaosSpringMsApplication - [correlationId=] - Running with Spring Boot v3.4.1, Spring v6.2.1
+2026-01-29 15:10:42 [main] INFO  c.e.c.ms.ChaosSpringMsApplication - [correlationId=] - No active profile set, falling back to 1 default profile: "default"
+2026-01-29 15:10:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-29 15:10:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-29 15:10:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Finished Spring Data repository scanning in 113 ms. Found 1 JPA repository interface.
+2026-01-29 15:10:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-29 15:10:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-01-29 15:10:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - [correlationId=] - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.example.chaos.ms.repository.ItemRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-29 15:10:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [correlationId=] - Finished Spring Data repository scanning in 3 ms. Found 0 Redis repository interfaces.
+2026-01-29 15:10:44 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [correlationId=] - Tomcat initialized with port 8080 (http)
+2026-01-29 15:10:44 [main] INFO  o.a.catalina.core.StandardService - [correlationId=] - Starting service [Tomcat]
+2026-01-29 15:10:44 [main] INFO  o.a.catalina.core.StandardEngine - [correlationId=] - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2026-01-29 15:10:44 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [correlationId=] - Initializing Spring embedded WebApplicationContext
+2026-01-29 15:10:44 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - [correlationId=] - Root WebApplicationContext: initialization completed in 2282 ms
+2026-01-29 15:10:45 [main] INFO  o.h.jpa.internal.util.LogHelper - [correlationId=] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-29 15:10:45 [main] INFO  org.hibernate.Version - [correlationId=] - HHH000412: Hibernate ORM core version 6.6.4.Final
+2026-01-29 15:10:45 [main] INFO  o.h.c.i.RegionFactoryInitiator - [correlationId=] - HHH000026: Second-level cache disabled
+2026-01-29 15:10:45 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - [correlationId=] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-29 15:10:45 [main] WARN  com.zaxxer.hikari.HikariConfig - [correlationId=] - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-01-29 15:10:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - [correlationId=] - HikariPool-1 - Starting...
+2026-01-29 15:10:45 [main] INFO  com.zaxxer.hikari.pool.HikariPool - [correlationId=] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@18adc20a
+2026-01-29 15:10:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - [correlationId=] - HikariPool-1 - Start completed.
+2026-01-29 15:10:45 [main] WARN  org.hibernate.orm.deprecation - [correlationId=] - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-29 15:10:45 [main] INFO  o.hibernate.orm.connections.pooling - [correlationId=] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.11
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-29 15:10:46 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - [correlationId=] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-29 15:10:46 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - [correlationId=] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-29 15:10:47 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - [correlationId=] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-29 15:10:48 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - [correlationId=] - Exposing 2 endpoints beneath base path '/actuator'
+2026-01-29 15:10:48 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [correlationId=] - Tomcat started on port 8080 (http) with context path '/'
+2026-01-29 15:10:48 [main] INFO  c.e.c.ms.ChaosSpringMsApplication - [correlationId=] - Started ChaosSpringMsApplication in 6.86 seconds (process running for 7.6)
+2026-01-29 15:10:51 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [correlationId=] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-29 15:10:51 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - [correlationId=] - Initializing Servlet 'dispatcherServlet'
+2026-01-29 15:10:51 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - [correlationId=] - Completed initialization in 3 ms
+2026-01-29 15:11:05 [http-nio-8080-exec-4] INFO  c.e.chaos.ms.service.ItemService - [correlationId=51b00dfc-edbd-4f8e-83a6-13557914b0f3] - Creating item: warmup-pulse
