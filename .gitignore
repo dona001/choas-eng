@@ -6,3 +6,8 @@
 chaos-spring-ms/ms_logs.txt
 chaos-spring-ms/tests/chaos_report.html
 chaos-spring-ms/chaos_report.html
+**/allure-chaos_report/
+**/allure-results/
+**/allure-report/
+**/test-results/
+**/test-reports/

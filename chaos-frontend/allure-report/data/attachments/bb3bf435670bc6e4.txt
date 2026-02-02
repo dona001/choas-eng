@@ -1,5 +1,0 @@
-🔵 EXPECTATION: Skeleton loaders should be visible immediately
-⚡ Chaos Injected: 5000ms latency on /api/items
-📍 Navigated to: http://localhost:3000/
-✅ ACTUAL: 3 skeleton loaders displayed
-✅ PASS: Skeleton loaders displayed during latency

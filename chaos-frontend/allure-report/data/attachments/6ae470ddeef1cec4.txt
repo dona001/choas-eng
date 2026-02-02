@@ -1,5 +1,0 @@
-🔵 EXPECTATION: No crash, graceful error handling
-⚡ Chaos Injected: HTTP 500 on /api/items
-📍 Navigated to: http://localhost:3000/
-✅ ACTUAL: Items container visible, no crash
-✅ PASS: Page remains stable during API failure

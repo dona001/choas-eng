@@ -1,5 +1,0 @@
-🔵 EXPECTATION: Graceful handling of aborted requests
-⚡ Chaos Injected: All requests aborted
-📍 Navigated to: http://localhost:3000/
-✅ ACTUAL: Health card visible, UI stable
-✅ PASS: UI stable during network timeout

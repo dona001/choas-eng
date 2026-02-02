@@ -1,68 +1,74 @@
 import { test, expect } from '@playwright/test';
+import { allure } from 'allure-playwright';
 
 test.describe('Frontend Chaos - Layer 2: Full-Stack Integration', () => {
 
     test('Integration 1: Real Backend Latency + UI Response', async ({ page }) => {
-        // This test assumes the backend chaos-spring-ms is running with Toxiproxy
-        // We'll connect to the real service and verify UI behavior
+        await allure.epic('Frontend Resilience');
+        await allure.feature('Full-Stack Chaos');
+        await allure.severity('critical');
 
-        await page.goto('/');
-
-        // EXPECTATION: Even with real backend delays, UI should show loading states
-        const skeletons = page.getByTestId('skeleton-loader');
-
-        // Wait for initial render
-        await expect(skeletons.first()).toBeVisible({ timeout: 10000 });
-
-        console.log('✅ PASS: UI renders loading state during real backend latency');
-    });
-
-    test('Integration 2: Backend Outage + Error Boundary', async ({ page }) => {
-        // Simulate connecting to a down backend
-        await page.route('**/api/**', async (route) => {
-            // Simulate connection refused
-            await route.abort('connectionrefused');
+        await allure.step('Navigate to real production dashboard with forced 2s latency', async () => {
+            await page.route('**/api/items', async (route) => {
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                await route.continue();
+            });
+            await page.goto('/', { waitUntil: 'domcontentloaded' });
         });
 
-        await page.goto('/');
-
-        // EXPECTATION: Error boundary should catch and display friendly message
-        const container = page.getByTestId('items-container');
-        await expect(container).toBeVisible();
-
-        console.log('✅ PASS: Error boundary handles backend outage');
+        await allure.step('Verify UI renders loading state (Skeletons) during initial fetch', async () => {
+            const skeletons = page.getByTestId('skeleton-loader');
+            await expect(skeletons.first()).toBeVisible({ timeout: 10000 });
+            console.log('✅ PASS: UI renders loading state during real backend latency');
+        });
     });
 
-    test('Integration 3: Flaky Network + Retry Logic', async ({ page }) => {
-        let requestCount = 0;
+    test('Integration 2: Backend Outage + Error Handling', async ({ page }) => {
+        await allure.epic('Frontend Resilience');
+        await allure.feature('Full-Stack Chaos');
+        await allure.severity('blocker');
 
-        await page.route('**/api/items', async (route) => {
-            requestCount++;
-
-            // Fail first 2 requests, succeed on 3rd (simulating retry)
-            if (requestCount < 3) {
-                await route.fulfill({
-                    status: 503,
-                    body: JSON.stringify({ error: 'Service Unavailable' }),
-                });
-            } else {
-                await route.fulfill({
-                    status: 200,
-                    contentType: 'application/json',
-                    body: JSON.stringify([
-                        { id: 1, name: 'Recovered Item', value: 100.0 }
-                    ]),
-                });
-            }
+        await allure.step('Simulate connection refused for backend', async () => {
+            await page.route('**/api/**', async (route) => {
+                await route.abort('connectionrefused');
+            });
         });
 
-        await page.goto('/');
+        await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-        // EXPECTATION: After retries, data should eventually load
-        // For now, verify page stability
-        const healthCard = page.getByTestId('health-card');
-        await expect(healthCard).toBeVisible();
+        await allure.step('Verify Registry shows error state gracefully', async () => {
+            const container = page.getByTestId('items-container');
+            await expect(container).toBeVisible();
+            // Should show the "Failed to fetch items" toast due to the background GET failing on load
+            const toast = page.getByTestId('toast-msg');
+            await expect(toast).toContainText('fetch');
+            console.log('✅ PASS: Error handled gracefully during backend outage');
+        });
+    });
 
-        console.log(`✅ PASS: Retry logic handled (${requestCount} attempts)`);
+    test('Integration 3: User Action during Outage', async ({ page }) => {
+        await allure.epic('Frontend Resilience');
+        await allure.feature('Full-Stack Chaos');
+        await allure.severity('critical');
+
+        await allure.step('Intercept all API traffic and return 503', async () => {
+            await page.route('**/api/**', async (route) => {
+                await route.fulfill({ status: 503, contentType: 'application/json', body: '{}' });
+            });
+        });
+
+        await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+        await allure.step('User attempts to create item during outage', async () => {
+            await page.fill('#item-name', 'Integration Chaos Test');
+            await page.fill('#item-value', '100');
+            await page.click('#submit-btn');
+        });
+
+        await allure.step('Verify Chaos Toast is shown', async () => {
+            const toast = page.getByTestId('toast-msg');
+            await expect(toast).toContainText('503');
+            console.log('✅ PASS: User action chaos handled in integration mode');
+        });
     });
 });

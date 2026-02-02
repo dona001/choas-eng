@@ -100,14 +100,15 @@ test.describe('Frontend Chaos - Layer 1: Browser-Level Mocking', () => {
         });
 
         await allure.step('Navigate to dashboard', async () => {
-            await page.goto('/');
+            await page.goto('/', { waitUntil: 'networkidle' });
             console.log('📍 Navigated to: http://localhost:3000/');
         });
 
         await allure.step('Verify UI stability', async () => {
-            const healthCard = page.getByTestId('health-card');
-            await expect(healthCard).toBeVisible();
-            console.log('✅ ACTUAL: Health card visible, UI stable');
+            // The new UI uses api-card as a testId
+            const apiCard = page.getByTestId('api-card');
+            await expect(apiCard).toBeVisible();
+            console.log('✅ ACTUAL: API status card visible, UI stable');
         });
 
         await allure.step('RESULT: Test Passed', async () => {
@@ -126,13 +127,14 @@ test.describe('Frontend Chaos - Layer 1: Browser-Level Mocking', () => {
         });
 
         await allure.step('Navigate to dashboard', async () => {
-            await page.goto('/');
+            // Use domcontentloaded for latency tests so we don't timeout on the network
+            await page.goto('/', { waitUntil: 'domcontentloaded' });
             console.log('📍 Navigated to: http://localhost:3000/');
         });
 
         await allure.step('Verify initial page load', async () => {
-            const healthCard = page.getByTestId('health-card');
-            await expect(healthCard).toBeVisible();
+            const apiCard = page.getByTestId('api-card');
+            await expect(apiCard).toBeVisible();
             console.log('✅ Page loaded successfully');
         });
 
@@ -142,8 +144,8 @@ test.describe('Frontend Chaos - Layer 1: Browser-Level Mocking', () => {
         });
 
         await allure.step('Verify content persistence', async () => {
-            const healthCard = page.getByTestId('health-card');
-            await expect(healthCard).toBeVisible();
+            const apiCard = page.getByTestId('api-card');
+            await expect(apiCard).toBeVisible();
             console.log('✅ ACTUAL: Content persisted offline');
         });
 
@@ -174,7 +176,7 @@ test.describe('Frontend Chaos - Layer 1: Browser-Level Mocking', () => {
         });
 
         await allure.step('Navigate to dashboard', async () => {
-            await page.goto('/');
+            await page.goto('/', { waitUntil: 'domcontentloaded' });
             console.log('📍 Navigated to: http://localhost:3000/');
         });
 
@@ -186,6 +188,89 @@ test.describe('Frontend Chaos - Layer 1: Browser-Level Mocking', () => {
 
         await allure.step('RESULT: Test Passed', async () => {
             console.log('✅ PASS: Empty data handled gracefully');
+        });
+    });
+
+    test('Scenario 6: POST Action Failure - Database Shutdown during Submission', async ({ page }) => {
+        await allure.epic('Frontend Resilience');
+        await allure.feature('Action Chaos');
+        await allure.story('Form Submission Failure');
+        await allure.severity('blocker');
+
+        await allure.step('Intercept POST and simulate Database Connection Refused', async () => {
+            await page.route('**/api/items', async (route) => {
+                if (route.request().method() === 'POST') {
+                    await route.fulfill({
+                        status: 503,
+                        contentType: 'application/json',
+                        body: JSON.stringify({ error: 'Service Unavailable' }),
+                    });
+                } else {
+                    await route.continue();
+                }
+            });
+            console.log('⚡ Chaos Injected: POST /api/items -> 503 Service Unavailable');
+        });
+
+        await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+        await allure.step('User performs "Commit to Database" action', async () => {
+            await page.fill('#item-name', 'Chaos Resilience Test');
+            await page.fill('#item-value', '99');
+            await page.click('#submit-btn');
+            console.log('🖱️ User clicked Submit during outage');
+        });
+
+        await allure.step('Verify UI displays error Toast and keeps data for retry', async () => {
+            const toast = page.getByTestId('toast-msg');
+            await expect(toast).toBeVisible();
+            // Look for Status Code specifically
+            await expect(toast).toContainText('503');
+
+            const nameVal = await page.inputValue('#item-name');
+            expect(nameVal).toBe('Chaos Resilience Test');
+            console.log('✅ ACTUAL: 503 Toast visible, Form data preserved');
+        });
+
+        await allure.step('RESULT: Action Resilience Passed', async () => {
+            console.log('✅ PASS: System handled mid-action failure gracefully');
+        });
+    });
+
+    test('Scenario 7: Sync Failure - Partial Fulfillment (POST succeeds, GET fails)', async ({ page }) => {
+        await allure.epic('Frontend Resilience');
+        await allure.feature('Sync Chaos');
+        await allure.story('List Refresh Failure');
+        await allure.severity('critical');
+
+        await allure.step('Setup: POST succeeds but subsequent GET /items fails', async () => {
+            await page.route('**/api/items', async (route) => {
+                const method = route.request().method();
+                if (method === 'POST') {
+                    await route.fulfill({ status: 201, body: JSON.stringify({ success: true }), contentType: 'application/json' });
+                } else {
+                    await route.fulfill({ status: 500, body: JSON.stringify({ error: 'Sync Error' }), contentType: 'application/json' });
+                }
+            });
+            console.log('⚡ Chaos Injected: POST 201 (OK) but GET 500 (Fail)');
+        });
+
+        await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+        await allure.step('User submits record', async () => {
+            await page.fill('#item-name', 'Partial Sync Test');
+            await page.fill('#item-value', '50');
+            await page.click('#submit-btn');
+        });
+
+        await allure.step('Verify Success Toast for POST, then Error Toast for GET', async () => {
+            const toast = page.getByTestId('toast-msg');
+            // Wait for success toast
+            await expect(toast).toContainText('successfully');
+
+            // The secondary GET 500 will trigger the next toast
+            await expect(toast).toContainText('fetch', { timeout: 15000 });
+            console.log('✅ ACTUAL: Handled specific sync failure after successful write');
         });
     });
 });
