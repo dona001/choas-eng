@@ -33,6 +33,11 @@ public class ItemController {
         return itemService.getItem(id);
     }
 
+    @GetMapping("/items")
+    public java.util.List<ItemDTO> getAllItems() {
+        return itemService.getAllItems();
+    }
+
     @GetMapping("/enrich/{id}")
     public EnrichedItemDTO getEnrichedItem(@PathVariable Long id) {
         return itemService.getEnrichedItem(id);

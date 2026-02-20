@@ -1,0 +1,39 @@
+{
+  "name": "chaos-mobile",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "private": true,
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "prebuild": "expo prebuild --clean",
+    "detox:build:ios": "detox build --configuration ios.sim.debug",
+    "detox:test:layer1": "detox test --configuration ios.sim.debug --testPathPattern layer1-app-chaos",
+    "detox:test:layer2": "detox test --configuration ios.sim.debug --testPathPattern layer2-integration-chaos",
+    "detox:test:layer3": "detox test --configuration ios.sim.debug --testPathPattern layer3-mobile-chaos",
+    "detox:test:all": "detox test --configuration ios.sim.debug",
+    "chaos": "./run-mobile-chaos.sh all",
+    "chaos:layer1": "./run-mobile-chaos.sh layer1",
+    "chaos:layer2": "./run-mobile-chaos.sh layer2",
+    "chaos:layer3": "./run-mobile-chaos.sh layer3"
+  },
+  "dependencies": {
+    "expo": "~54.0.33",
+    "expo-build-properties": "^1.0.10",
+    "expo-status-bar": "~3.0.9",
+    "react": "19.1.0",
+    "react-native": "0.81.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/react": "~19.1.0",
+    "detox": "^20.47.0",
+    "detox-cli": "^20.47.0",
+    "jest": "~29.7.0",
+    "jest-html-reporters": "^3.1.7",
+    "ts-jest": "^29.4.6",
+    "typescript": "~5.9.2"
+  }
+}

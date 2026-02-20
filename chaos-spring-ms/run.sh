@@ -62,7 +62,7 @@ case "$1" in
     export MS_URL="http://localhost:$MS_PORT"
     export TOXIPROXY_URL="http://localhost:$TOXIPROXY_PORT"
     export WIREMOCK_URL="http://localhost:$WIREMOCK_PORT"
-    mvn -f tests/pom.xml test
+    mvn -f tests/pom.xml clean test
     
     echo "Done! Report available at: tests/chaos_report.html"
     ;;

@@ -45,6 +45,13 @@ public class ItemService {
                 .orElseThrow(() -> new RuntimeException("Item not found: " + id));
     }
 
+    public java.util.List<ItemDTO> getAllItems() {
+        log.info("Fetching all items from DB");
+        return itemRepository.findAll().stream()
+                .map(this::mapToDTO)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
     public EnrichedItemDTO getEnrichedItem(Long id) {
         ItemDTO item = getItem(id);
         ExternalInfoDTO externalInfo = externalServiceClient.fetchExternalInfo(id);

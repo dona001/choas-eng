@@ -11,3 +11,5 @@ chaos-spring-ms/chaos_report.html
 **/allure-report/
 **/test-results/
 **/test-reports/
+.chaos-test-state.json
+reports/
